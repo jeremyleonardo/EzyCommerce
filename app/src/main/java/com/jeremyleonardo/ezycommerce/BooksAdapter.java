@@ -21,9 +21,16 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.ViewHolder> 
     Context ctx;
     List<Book> listBooks;
 
-    public BooksAdapter(Context ctx) {
+    AdapterCallback callback;
+
+    public interface AdapterCallback{
+        void onItemClicked(Integer id);
+    }
+
+    public BooksAdapter(Context ctx, AdapterCallback callback) {
         this.ctx = ctx;
         this.listBooks = new ArrayList<>();
+        this.callback = callback;
     }
 
     public void setListBooks(List<Book> listBooks) {
@@ -77,8 +84,10 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.ViewHolder> 
             int position = getAdapterPosition();
             Book book = listBooks.get(position);
 
-            String info = "Author: " + book.getAuthor() + ", Price: " + book.getPrice();
-            Toast.makeText(ctx, info, Toast.LENGTH_LONG).show();
+            if(callback != null) {
+                callback.onItemClicked(book.getId());
+            }
+
         }
     }
 }

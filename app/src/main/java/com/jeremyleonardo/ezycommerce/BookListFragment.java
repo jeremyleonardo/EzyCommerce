@@ -1,5 +1,6 @@
 package com.jeremyleonardo.ezycommerce;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -18,13 +19,27 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class BookListFragment extends Fragment {
+public class BookListFragment extends Fragment implements BooksAdapter.AdapterCallback {
 
     RecyclerView rvBooks;
     BooksAdapter booksAdapter;
 
+    FragmentListener listener;
+
+    public interface FragmentListener {
+        void onItemClick(Integer id);
+    }
+
     public BookListFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if(getActivity() instanceof  FragmentListener) {
+            listener = (FragmentListener) getActivity();
+        }
     }
 
     public static BookListFragment newInstance() {
@@ -45,8 +60,8 @@ public class BookListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
 
+        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_book_list, container, false);
     }
 
@@ -57,7 +72,7 @@ public class BookListFragment extends Fragment {
         rvBooks = getView().findViewById(R.id.rvBooks);
         rvBooks.setLayoutManager(new LinearLayoutManager(getView().getContext()));
 
-        booksAdapter = new BooksAdapter(getView().getContext());
+        booksAdapter = new BooksAdapter(getView().getContext(), this);
         rvBooks.setAdapter(booksAdapter);
 
         Retrofit retrofit = ApiClient.getRetrofit(getString(R.string.api_base_url));
@@ -78,4 +93,10 @@ public class BookListFragment extends Fragment {
         });
     }
 
+    @Override
+    public void onItemClicked(Integer id) {
+        if(listener != null) {
+            listener.onItemClick(id);
+        }
+    }
 }
