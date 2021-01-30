@@ -105,4 +105,8 @@ public class Book {
         this.category = category;
     }
 
+    public String getStars() {
+        return "★★★★✩"; // hardcoded because API does not provide the rating
+    }
+
 }
