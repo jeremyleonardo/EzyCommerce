@@ -17,23 +17,28 @@ import retrofit2.Retrofit;
 
 public class MainActivity extends AppCompatActivity implements BookListFragment.FragmentListener {
 
+    FragmentManager fragmentManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        fragmentManager = getSupportFragmentManager();
     }
 
     @Override
     public void onItemClick(Integer id) {
-        BookDetailFragment fragment = new BookDetailFragment();
-        fragment.setId(id);
 
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager
-                .beginTransaction()
-                .replace(R.id.fragment_container, fragment)
-                .addToBackStack(null)
-                .commit();
+        if(findViewById(R.id.fragment_container) != null){
+            BookDetailFragment fragment = new BookDetailFragment();
+            fragment.setId(id);
+            fragmentManager
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, fragment)
+                    .addToBackStack(null)
+                    .commit();
+        } else {
 
+        }
     }
 }

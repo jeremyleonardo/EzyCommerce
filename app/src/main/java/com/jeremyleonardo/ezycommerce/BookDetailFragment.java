@@ -67,6 +67,8 @@ public class BookDetailFragment extends Fragment {
         View rootView = getView();
         tvDetailName = rootView.findViewById(R.id.tvDetailName);
         tvDetailDescription = rootView.findViewById(R.id.tvDetailDescription);
+        tvDetailPrice = rootView.findViewById(R.id.tvDetailPrice);
+        tvDetailRating = rootView.findViewById(R.id.tvDetailRating);
 
         Retrofit retrofit = ApiClient.getRetrofit(getString(R.string.api_base_url));
         AwsService service = retrofit.create(AwsService.class);
@@ -92,8 +94,9 @@ public class BookDetailFragment extends Fragment {
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
+        if(id != null)
+            outState.putInt("bookId", id.intValue());
         super.onSaveInstanceState(outState);
-        outState.putInt("bookId", id);
     }
 
 }

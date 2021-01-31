@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:padding="20dp"
     tools:context=".BookDetailFragment">
 
     <LinearLayout
@@ -22,24 +25,30 @@
 
             <TextView
                 android:id="@+id/tvDetailName"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="TextView" />
+                android:text="Book Name"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="#494949"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tvDetailRating"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="TextView" />
+                android:text="Rating"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
         </LinearLayout>
 
         <TextView
             android:id="@+id/tvDetailPrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Book Name" />
+            android:paddingTop="10dp"
+            android:text="Book Price"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -48,23 +57,29 @@
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="Description" />
+                android:gravity="bottom"
+                android:text="Description"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
             <Button
                 android:id="@+id/btnBuy"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="BUY" />
+                android:background="@color/colorPrimary"
+                android:text="BUY"
+                android:textColor="#FFFFFF" />
         </LinearLayout>
 
         <TextView
             android:id="@+id/tvDetailDescription"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TextView" />
+            android:layout_marginTop="15dp"
+            android:text="Loading ..."
+            app:lineHeight="20sp" />
     </LinearLayout>
 
 </FrameLayout>
