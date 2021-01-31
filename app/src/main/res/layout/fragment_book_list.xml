@@ -6,9 +6,29 @@
     android:background="#FFFFFF"
     tools:context=".BookListFragment">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvBooks"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></androidx.recyclerview.widget.RecyclerView>
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/llCategories"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:padding="10dp" />
+        </HorizontalScrollView>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvBooks"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </androidx.recyclerview.widget.RecyclerView>
+    </LinearLayout>
 
 </FrameLayout>

@@ -8,10 +8,14 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.LinearLayout;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -20,6 +24,8 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 
 public class BookListFragment extends Fragment implements BooksAdapter.AdapterCallback {
+
+    List<Book> books;
 
     RecyclerView rvBooks;
     BooksAdapter booksAdapter;
@@ -78,12 +84,13 @@ public class BookListFragment extends Fragment implements BooksAdapter.AdapterCa
         Retrofit retrofit = ApiClient.getRetrofit(getString(R.string.api_base_url));
         AwsService service = retrofit.create(AwsService.class);
         Call<BooksResponse> call = service.getBooks(getString(R.string.nim), getString(R.string.nama));
-
         call.enqueue(new Callback<BooksResponse>() {
             @Override
             public void onResponse(Call<BooksResponse> call, Response<BooksResponse> response) {
-                List<Book> listBooks = response.body().getProducts();
-                booksAdapter.setListBooks(listBooks);
+                books = response.body().getProducts();
+                booksAdapter.setListBooks(books);
+
+                renderAllCategoryButtons();
             }
 
             @Override
@@ -99,4 +106,49 @@ public class BookListFragment extends Fragment implements BooksAdapter.AdapterCa
             listener.onItemClick(id);
         }
     }
+
+//    Dynamically renders category buttons based on books retrieved from API
+    public void renderAllCategoryButtons(){
+        List<String> bookCategories = new ArrayList<>();
+        renderCategoryButton("all");
+        for (Book book: books) {
+            boolean categoryAlreadyExist = false;
+            for(String cat: bookCategories){
+                if(cat.equals(book.getCategory())){
+                    categoryAlreadyExist = true;
+                    break;
+                }
+            }
+            if(!categoryAlreadyExist){
+                bookCategories.add(book.getCategory());
+                renderCategoryButton(book.getCategory());
+            }
+        }
+    }
+
+    public void renderCategoryButton(String category){
+        Button btnCategory = new Button(getContext());
+        btnCategory.setText(category);
+
+        btnCategory.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                if (category == "all"){
+                    booksAdapter.setListBooks(books);
+                } else {
+                    List<Book> filteredBooks = new ArrayList<>();
+                    for (int i = 0; i < books.size(); i++) {
+                        if(books.get(i).getCategory().equals(category)){
+                            filteredBooks.add(books.get(i));
+                        }
+                    }
+                    booksAdapter.setListBooks((List<Book>) filteredBooks);
+                }
+            }
+        });
+
+        LinearLayout ll = (LinearLayout)getActivity().findViewById(R.id.llCategories);
+        btnCategory.setTextSize(11);
+        ll.addView(btnCategory);
+    }
+
 }
