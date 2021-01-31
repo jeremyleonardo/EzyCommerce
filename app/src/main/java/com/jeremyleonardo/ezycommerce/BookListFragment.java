@@ -43,8 +43,8 @@ public class BookListFragment extends Fragment implements BooksAdapter.AdapterCa
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if(getActivity() instanceof  FragmentListener) {
-            listener = (FragmentListener) getActivity();
+        if(getParentFragment() instanceof  FragmentListener) {
+            listener = (FragmentListener) getParentFragment();
         }
     }
 
@@ -102,6 +102,7 @@ public class BookListFragment extends Fragment implements BooksAdapter.AdapterCa
 
     @Override
     public void onItemClicked(Integer id) {
+        Log.v("TESTDEBUG", "onItemClicked");
         if(listener != null) {
             listener.onItemClick(id);
         }
@@ -127,7 +128,7 @@ public class BookListFragment extends Fragment implements BooksAdapter.AdapterCa
     }
 
     public void renderCategoryButton(String category){
-        Button btnCategory = new Button(getContext());
+        Button btnCategory = new Button(getParentFragment().getActivity());
         btnCategory.setText(category);
 
         btnCategory.setOnClickListener(new View.OnClickListener() {
