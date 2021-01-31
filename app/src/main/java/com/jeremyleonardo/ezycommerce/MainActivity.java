@@ -29,12 +29,12 @@ public class MainActivity extends AppCompatActivity implements BookListFragment.
     @Override
     public void onItemClick(Integer id) {
 
-        if(findViewById(R.id.fragment_container) != null){
+        if(findViewById(R.id.fragment_book_detail_container) != null){
             BookDetailFragment fragment = new BookDetailFragment();
             fragment.setId(id);
             fragmentManager
                     .beginTransaction()
-                    .replace(R.id.fragment_container, fragment)
+                    .replace(R.id.fragment_book_detail_container, fragment)
                     .addToBackStack(null)
                     .commit();
         } else {
