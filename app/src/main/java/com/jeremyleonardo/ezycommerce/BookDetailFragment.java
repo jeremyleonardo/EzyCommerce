@@ -8,7 +8,10 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
 
 import java.util.List;
 
@@ -25,6 +28,7 @@ public class BookDetailFragment extends Fragment {
     private TextView tvDetailDescription;
     private TextView tvDetailPrice;
     private TextView tvDetailRating;
+    private ImageView ivDetailThumbnail;
 
     public BookDetailFragment() {
         // Required empty public constructor
@@ -69,6 +73,7 @@ public class BookDetailFragment extends Fragment {
         tvDetailDescription = rootView.findViewById(R.id.tvDetailDescription);
         tvDetailPrice = rootView.findViewById(R.id.tvDetailPrice);
         tvDetailRating = rootView.findViewById(R.id.tvDetailRating);
+        ivDetailThumbnail = rootView.findViewById(R.id.ivDetailThumbnail);
 
         Retrofit retrofit = ApiClient.getRetrofit(getString(R.string.api_base_url));
         AwsService service = retrofit.create(AwsService.class);
@@ -83,6 +88,9 @@ public class BookDetailFragment extends Fragment {
                 tvDetailDescription.setText(book.getDescription());
                 tvDetailPrice.setText("$" + book.getPrice());
                 tvDetailRating.setText(book.getStars());
+                Glide.with(getContext())
+                        .load(book.getImg())
+                        .into(ivDetailThumbnail);
             }
 
             @Override
