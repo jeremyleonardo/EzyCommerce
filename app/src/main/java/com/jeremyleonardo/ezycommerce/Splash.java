@@ -1,5 +1,6 @@
 package com.jeremyleonardo.ezycommerce;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -15,6 +16,9 @@ public class Splash extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.hide();
+
         waitHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -22,7 +26,7 @@ public class Splash extends AppCompatActivity {
                 startActivity(intent);
                 finish();
             }
-        }, 5000);
+        }, 4000);
 
     }
 }
