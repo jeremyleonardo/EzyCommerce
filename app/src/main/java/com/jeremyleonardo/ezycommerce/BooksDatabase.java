@@ -112,6 +112,40 @@ public class BooksDatabase {
         return books;
     }
 
+    public Book getBook(Integer id) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        String selection = "id=?";
+        String[] selectionArgs = {"" + id};
+        Cursor cursor = db.query(DatabaseHelper.TABLE_NAME_BOOKS, null, selection, selectionArgs, null, null, null);
+
+        Book book = null;
+        if(cursor.moveToFirst()) {
+//            Integer id = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.FIELD_BOOK_ID));
+            String name = cursor.getString(cursor.getColumnIndex(DatabaseHelper.FIELD_BOOK_NAME));
+            String description = cursor.getString(cursor.getColumnIndex(DatabaseHelper.FIELD_BOOK_DESCRIPTION));
+            BigDecimal price = BigDecimal.valueOf(cursor.getDouble(cursor.getColumnIndex(DatabaseHelper.FIELD_BOOK_PRICE)));
+            String author = cursor.getString(cursor.getColumnIndex(DatabaseHelper.FIELD_BOOK_AUTHOR));
+            String type = cursor.getString(cursor.getColumnIndex(DatabaseHelper.FIELD_BOOK_TYPE));
+            String img = cursor.getString(cursor.getColumnIndex(DatabaseHelper.FIELD_BOOK_IMG));
+            String category = cursor.getString(cursor.getColumnIndex(DatabaseHelper.FIELD_BOOK_CATEGORY));
+            int inCartInt = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.FIELD_BOOK_IN_CART));
+            Boolean inCart = false;
+            if(inCartInt == 1){
+                inCart = true;
+            }
+            Integer qty = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.FIELD_BOOK_QTY));
+
+            book = new Book(id, name, description, price, author, type, img, category, qty, inCart);
+        }
+
+        cursor.close();
+        db.close();
+
+        return book;
+    }
+
+
     public void changeQuantity(Integer id, int qty) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 

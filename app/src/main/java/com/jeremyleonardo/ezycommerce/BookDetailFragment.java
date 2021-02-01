@@ -1,5 +1,6 @@
 package com.jeremyleonardo.ezycommerce;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -25,6 +26,7 @@ import retrofit2.Retrofit;
 public class BookDetailFragment extends Fragment {
 
     private Integer id;
+    private Book book;
 
     private TextView tvDetailName;
     private TextView tvDetailDescription;
@@ -80,29 +82,39 @@ public class BookDetailFragment extends Fragment {
         btnBuy = rootView.findViewById(R.id.btnBuy);
         btnBuy.setOnClickListener(this::addToCart);
 
-        Retrofit retrofit = ApiClient.getRetrofit(getString(R.string.api_base_url));
-        AwsService service = retrofit.create(AwsService.class);
-        Call<BookDetailResponse> call = service.getBookDetail(id, getString(R.string.nim), getString(R.string.nama));
+        BooksDatabase booksDatabase = new BooksDatabase(getContext());
+        book = booksDatabase.getBook(id);
+        tvDetailName.setText(book.getName());
+        tvDetailDescription.setText(book.getDescription());
+        tvDetailPrice.setText("$" + book.getPrice());
+        tvDetailRating.setText(book.getStars());
+        Glide.with(getContext())
+                .load(book.getImg())
+                .into(ivDetailThumbnail);
 
-        call.enqueue(new Callback<BookDetailResponse>() {
-            @Override
-            public void onResponse(Call<BookDetailResponse> call, Response<BookDetailResponse> response) {
-                BookDetailResponse bookDetailResponse = response.body();
-                Book book = bookDetailResponse.getProducts().get(0);
-                tvDetailName.setText(book.getName());
-                tvDetailDescription.setText(book.getDescription());
-                tvDetailPrice.setText("$" + book.getPrice());
-                tvDetailRating.setText(book.getStars());
-                Glide.with(getContext())
-                        .load(book.getImg())
-                        .into(ivDetailThumbnail);
-            }
-
-            @Override
-            public void onFailure(Call<BookDetailResponse> call, Throwable t) {
-                call.cancel();
-            }
-        });
+//        Retrofit retrofit = ApiClient.getRetrofit(getString(R.string.api_base_url));
+//        AwsService service = retrofit.create(AwsService.class);
+//        Call<BookDetailResponse> call = service.getBookDetail(id, getString(R.string.nim), getString(R.string.nama));
+//
+//        call.enqueue(new Callback<BookDetailResponse>() {
+//            @Override
+//            public void onResponse(Call<BookDetailResponse> call, Response<BookDetailResponse> response) {
+//                BookDetailResponse bookDetailResponse = response.body();
+//                Book book = bookDetailResponse.getProducts().get(0);
+//                tvDetailName.setText(book.getName());
+//                tvDetailDescription.setText(book.getDescription());
+//                tvDetailPrice.setText("$" + book.getPrice());
+//                tvDetailRating.setText(book.getStars());
+//                Glide.with(getContext())
+//                        .load(book.getImg())
+//                        .into(ivDetailThumbnail);
+//            }
+//
+//            @Override
+//            public void onFailure(Call<BookDetailResponse> call, Throwable t) {
+//                call.cancel();
+//            }
+//        });
     }
 
     @Override
@@ -114,9 +126,19 @@ public class BookDetailFragment extends Fragment {
 
     public void addToCart(View view) {
         BooksDatabase booksDatabase = new BooksDatabase(getContext());
-        booksDatabase.changeQuantity(id, 1);
-        Toast toast = Toast.makeText(getContext(), "Book added to cart", Toast.LENGTH_SHORT);
-        toast.show();
+        if(book.getQty() == 0){
+            Toast toast = Toast.makeText(getContext(), "Book added to cart", Toast.LENGTH_SHORT);
+            toast.show();
+        } else {
+            Toast toast = Toast.makeText(getContext(), "Additional book quantity added to the cart", Toast.LENGTH_SHORT);
+            toast.show();
+        }
+        book = booksDatabase.getBook(id);
+        booksDatabase.changeQuantity(id, (book.getQty() + 1));
+
+        Intent intent = new Intent(getContext(), CartActivity.class);
+        startActivity(intent);
+        getActivity().overridePendingTransition(0, 0);
     }
 
 }
