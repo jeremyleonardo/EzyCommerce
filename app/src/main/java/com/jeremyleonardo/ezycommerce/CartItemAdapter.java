@@ -95,7 +95,12 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.ViewHo
                         int position = getAdapterPosition();
                         Book book = listBooks.get(position);
                         if(callback != null) {
-                            callback.onQuantityModified(book.getId(), book.getQty());
+                            callback.onQuantityModified(book.getId(), book.getQty()-1);
+                            book.setQty(book.getQty()-1);
+                            if(book.getQty() == 0){
+                                listBooks.remove(book);
+                            }
+                            notifyDataSetChanged();
                         }
                     }
                 });
@@ -108,7 +113,9 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.ViewHo
                         int position = getAdapterPosition();
                         Book book = listBooks.get(position);
                         if(callback != null) {
-                            callback.onQuantityModified(book.getId(), book.getQty());
+                            callback.onQuantityModified(book.getId(), book.getQty()+1);
+                            book.setQty(book.getQty()+1);
+                            notifyDataSetChanged();
                         }
                     }
                 });

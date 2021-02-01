@@ -127,7 +127,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Next"
+                    android:onClick="onConfirmClicked"
+                    android:text="Confirm"
                     android:textAllCaps="false" />
 
                 <Button
@@ -135,6 +136,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:onClick="onCancelClicked"
                     android:text="Cancel"
                     android:textAllCaps="false" />
             </LinearLayout>
