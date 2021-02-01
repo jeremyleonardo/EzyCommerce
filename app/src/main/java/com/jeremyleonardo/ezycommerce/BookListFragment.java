@@ -172,7 +172,6 @@ public class BookListFragment extends Fragment implements BooksAdapter.AdapterCa
     private void initDatabase(List<Book> books) {
         BooksDatabase booksDatabase = new BooksDatabase(getContext());
         for (Book book: books) {
-            Log.v("TESTDEBUG", book.getName());
             booksDatabase.insertBook(book, 0);
         }
         PreferenceHelper.setDoneInitDatabase(getContext());

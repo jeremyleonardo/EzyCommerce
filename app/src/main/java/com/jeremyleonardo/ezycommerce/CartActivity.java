@@ -2,14 +2,20 @@ package com.jeremyleonardo.ezycommerce;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class CartActivity extends AppCompatActivity {
+public class CartActivity extends AppCompatActivity implements CartItemAdapter.AdapterCallback {
+
+    CartItemAdapter cartItemAdapter;
+    RecyclerView rvCartItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,6 +24,12 @@ public class CartActivity extends AppCompatActivity {
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+        rvCartItem = findViewById(R.id.rvCartItem);
+        rvCartItem.setNestedScrollingEnabled(false);
+        rvCartItem.setLayoutManager(new LinearLayoutManager(this));
+        cartItemAdapter = new CartItemAdapter(this, this);
+        rvCartItem.setAdapter(cartItemAdapter);
     }
 
     @Override
@@ -42,5 +54,10 @@ public class CartActivity extends AppCompatActivity {
         }
 
     };
+
+    @Override
+    public void onQuantityModified(Integer bookId, Integer qty) {
+
+    }
 
 }
