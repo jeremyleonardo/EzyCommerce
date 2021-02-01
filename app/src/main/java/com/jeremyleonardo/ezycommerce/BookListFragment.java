@@ -81,30 +81,38 @@ public class BookListFragment extends Fragment implements BooksAdapter.AdapterCa
         booksAdapter = new BooksAdapter(getView().getContext(), this);
         rvBooks.setAdapter(booksAdapter);
 
-        try {
-            Retrofit retrofit = ApiClient.getRetrofit(getString(R.string.api_base_url));
-            AwsService service = retrofit.create(AwsService.class);
-            Call<BooksResponse> call = service.getBooks(getString(R.string.nim), getString(R.string.nama));
-            call.enqueue(new Callback<BooksResponse>() {
-                @Override
-                public void onResponse(Call<BooksResponse> call, Response<BooksResponse> response) {
-                    List<Book> resBooks = response.body().getProducts();
-                    initDatabase(resBooks);
+        if(!PreferenceHelper.checkDatabaseInit(getContext())){
+            try {
+                Retrofit retrofit = ApiClient.getRetrofit(getString(R.string.api_base_url));
+                AwsService service = retrofit.create(AwsService.class);
+                Call<BooksResponse> call = service.getBooks(getString(R.string.nim), getString(R.string.nama));
+                call.enqueue(new Callback<BooksResponse>() {
+                    @Override
+                    public void onResponse(Call<BooksResponse> call, Response<BooksResponse> response) {
+                        List<Book> resBooks = response.body().getProducts();
+                        initDatabase(resBooks);
 
-                    BooksDatabase booksDatabase = new BooksDatabase(getContext());
-                    books = booksDatabase.getAllBooks();
-                    booksAdapter.setListBooks(books);
-
-                    renderAllCategoryButtons();
-                }
-                @Override
-                public void onFailure(Call<BooksResponse> call, Throwable t) {
-                    call.cancel();
-                }
-            });
-        } catch (Exception ignored) {
-            ignored.printStackTrace();
+                        BooksDatabase booksDatabase = new BooksDatabase(getContext());
+                        books = booksDatabase.getAllBooks();
+                        booksAdapter.setListBooks(books);
+                        renderAllCategoryButtons();
+                    }
+                    @Override
+                    public void onFailure(Call<BooksResponse> call, Throwable t) {
+                        call.cancel();
+                    }
+                });
+            } catch (Exception ignored) {
+                ignored.printStackTrace();
+            }
+        } else {
+            BooksDatabase booksDatabase = new BooksDatabase(getContext());
+            books = booksDatabase.getAllBooks();
+            booksAdapter.setListBooks(books);
+            renderAllCategoryButtons();
         }
+
+
 
     }
 
@@ -167,6 +175,7 @@ public class BookListFragment extends Fragment implements BooksAdapter.AdapterCa
             Log.v("TESTDEBUG", book.getName());
             booksDatabase.insertBook(book, 0);
         }
+        PreferenceHelper.setDoneInitDatabase(getContext());
     }
 
 }

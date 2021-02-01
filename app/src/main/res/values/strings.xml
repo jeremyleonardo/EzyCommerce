@@ -4,4 +4,5 @@
     <string name="nim">2201731106</string>
     <string name="nama">Jeremy Leonardo</string>
     <string name="splash_notice">Notice: \nPlease make sure your internet connection is online while using this app.</string>
+    <string name="preference_file_key">com.jeremyleonardo.ezycommerce.PREFERENCE_FILE_KEY</string>
 </resources>
