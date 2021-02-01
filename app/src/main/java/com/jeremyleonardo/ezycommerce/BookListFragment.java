@@ -81,23 +81,31 @@ public class BookListFragment extends Fragment implements BooksAdapter.AdapterCa
         booksAdapter = new BooksAdapter(getView().getContext(), this);
         rvBooks.setAdapter(booksAdapter);
 
-        Retrofit retrofit = ApiClient.getRetrofit(getString(R.string.api_base_url));
-        AwsService service = retrofit.create(AwsService.class);
-        Call<BooksResponse> call = service.getBooks(getString(R.string.nim), getString(R.string.nama));
-        call.enqueue(new Callback<BooksResponse>() {
-            @Override
-            public void onResponse(Call<BooksResponse> call, Response<BooksResponse> response) {
-                books = response.body().getProducts();
-                booksAdapter.setListBooks(books);
+        try {
+            Retrofit retrofit = ApiClient.getRetrofit(getString(R.string.api_base_url));
+            AwsService service = retrofit.create(AwsService.class);
+            Call<BooksResponse> call = service.getBooks(getString(R.string.nim), getString(R.string.nama));
+            call.enqueue(new Callback<BooksResponse>() {
+                @Override
+                public void onResponse(Call<BooksResponse> call, Response<BooksResponse> response) {
+                    List<Book> resBooks = response.body().getProducts();
+                    initDatabase(resBooks);
 
-                renderAllCategoryButtons();
-            }
+                    BooksDatabase booksDatabase = new BooksDatabase(getContext());
+                    books = booksDatabase.getAllBooks();
+                    booksAdapter.setListBooks(books);
 
-            @Override
-            public void onFailure(Call<BooksResponse> call, Throwable t) {
-                call.cancel();
-            }
-        });
+                    renderAllCategoryButtons();
+                }
+                @Override
+                public void onFailure(Call<BooksResponse> call, Throwable t) {
+                    call.cancel();
+                }
+            });
+        } catch (Exception ignored) {
+            ignored.printStackTrace();
+        }
+
     }
 
     @Override
@@ -111,17 +119,19 @@ public class BookListFragment extends Fragment implements BooksAdapter.AdapterCa
     public void renderAllCategoryButtons(){
         List<String> bookCategories = new ArrayList<>();
         renderCategoryButton("all");
-        for (Book book: books) {
-            boolean categoryAlreadyExist = false;
-            for(String cat: bookCategories){
-                if(cat.equals(book.getCategory())){
-                    categoryAlreadyExist = true;
-                    break;
+        if(books.size() > 0){
+            for (Book book: books) {
+                boolean categoryAlreadyExist = false;
+                for(String cat: bookCategories){
+                    if(cat.equals(book.getCategory())){
+                        categoryAlreadyExist = true;
+                        break;
+                    }
                 }
-            }
-            if(!categoryAlreadyExist){
-                bookCategories.add(book.getCategory());
-                renderCategoryButton(book.getCategory());
+                if(!categoryAlreadyExist){
+                    bookCategories.add(book.getCategory());
+                    renderCategoryButton(book.getCategory());
+                }
             }
         }
     }
@@ -149,6 +159,14 @@ public class BookListFragment extends Fragment implements BooksAdapter.AdapterCa
         LinearLayout ll = (LinearLayout)getActivity().findViewById(R.id.llCategories);
         btnCategory.setTextSize(11);
         ll.addView(btnCategory);
+    }
+
+    private void initDatabase(List<Book> books) {
+        BooksDatabase booksDatabase = new BooksDatabase(getContext());
+        for (Book book: books) {
+            Log.v("TESTDEBUG", book.getName());
+            booksDatabase.insertBook(book, 0);
+        }
     }
 
 }

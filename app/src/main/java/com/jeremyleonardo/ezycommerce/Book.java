@@ -3,6 +3,8 @@ package com.jeremyleonardo.ezycommerce;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.math.BigDecimal;
+
 public class Book {
 
     @SerializedName("id")
@@ -16,7 +18,7 @@ public class Book {
     private String description;
     @SerializedName("price")
     @Expose
-    private Double price;
+    private BigDecimal price;
     @SerializedName("author")
     @Expose
     private String author;
@@ -37,7 +39,7 @@ public class Book {
 
     public Book() { }
 
-    public Book(Integer id, String name, String description, Double price, String author, String type, String img, String category, Boolean inCart) {
+    public Book(Integer id, String name, String description, BigDecimal price, String author, String type, String img, String category, Boolean inCart) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -49,11 +51,11 @@ public class Book {
         this.inCart = inCart;
     }
 
-    public Book(Integer id, String name, String description, Float price, String author, String type, String img, String category, Integer qty, boolean inCart) {
+    public Book(Integer id, String name, String description, BigDecimal price, String author, String type, String img, String category, Integer qty, boolean inCart) {
         this.id = id;
         this.name = name;
         this.description = description;
-        this.price = price.doubleValue();
+        this.price = price;
         this.author = author;
         this.type = type;
         this.img = img;
@@ -86,11 +88,11 @@ public class Book {
         this.description = description;
     }
 
-    public Double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(Double price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 
