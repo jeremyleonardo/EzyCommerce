@@ -33,6 +33,35 @@ public class Book {
     @Expose
     private String category;
 
+    private Integer qty;
+
+    public Book() { }
+
+    public Book(Integer id, String name, String description, Double price, String author, String type, String img, String category, Boolean inCart) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.author = author;
+        this.type = type;
+        this.img = img;
+        this.category = category;
+        this.inCart = inCart;
+    }
+
+    public Book(Integer id, String name, String description, Float price, String author, String type, String img, String category, Integer qty, boolean inCart) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.price = price.doubleValue();
+        this.author = author;
+        this.type = type;
+        this.img = img;
+        this.category = category;
+        this.inCart = inCart;
+        this.qty = qty;
+    }
+
     public Integer getId() {
         return id;
     }
@@ -107,6 +136,14 @@ public class Book {
 
     public String getStars() {
         return "★★★★✩"; // hardcoded because API does not provide the rating
+    }
+
+    public void setQty(Integer qty){
+        this.qty = qty;
+    }
+
+    public Integer getQty() {
+        return qty;
     }
 
 }
