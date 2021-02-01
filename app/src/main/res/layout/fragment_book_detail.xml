@@ -74,6 +74,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:background="@color/colorPrimary"
+                    android:onClick="addToCart"
                     android:text="BUY"
                     android:textColor="#FFFFFF" />
             </LinearLayout>

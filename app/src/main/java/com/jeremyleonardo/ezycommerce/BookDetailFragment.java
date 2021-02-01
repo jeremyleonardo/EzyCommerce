@@ -8,8 +8,10 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
@@ -29,6 +31,7 @@ public class BookDetailFragment extends Fragment {
     private TextView tvDetailPrice;
     private TextView tvDetailRating;
     private ImageView ivDetailThumbnail;
+    private Button btnBuy;
 
     public BookDetailFragment() {
         // Required empty public constructor
@@ -74,6 +77,8 @@ public class BookDetailFragment extends Fragment {
         tvDetailPrice = rootView.findViewById(R.id.tvDetailPrice);
         tvDetailRating = rootView.findViewById(R.id.tvDetailRating);
         ivDetailThumbnail = rootView.findViewById(R.id.ivDetailThumbnail);
+        btnBuy = rootView.findViewById(R.id.btnBuy);
+        btnBuy.setOnClickListener(this::addToCart);
 
         Retrofit retrofit = ApiClient.getRetrofit(getString(R.string.api_base_url));
         AwsService service = retrofit.create(AwsService.class);
@@ -105,6 +110,13 @@ public class BookDetailFragment extends Fragment {
         if(id != null)
             outState.putInt("bookId", id.intValue());
         super.onSaveInstanceState(outState);
+    }
+
+    public void addToCart(View view) {
+        BooksDatabase booksDatabase = new BooksDatabase(getContext());
+        booksDatabase.changeQuantity(id, 1);
+        Toast toast = Toast.makeText(getContext(), "Book added to cart", Toast.LENGTH_SHORT);
+        toast.show();
     }
 
 }

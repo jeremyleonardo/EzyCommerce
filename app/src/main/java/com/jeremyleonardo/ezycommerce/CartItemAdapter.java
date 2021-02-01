@@ -33,7 +33,7 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.ViewHo
         this.callback = callback;
 
         BooksDatabase booksDatabase = new BooksDatabase(ctx);
-        this.listBooks = booksDatabase.getAllBooks();
+        this.listBooks = booksDatabase.getBooksInCart();
         notifyDataSetChanged();
     }
 
@@ -60,6 +60,7 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.ViewHo
         holder.tvCartItemName.setText(book.getName());
         holder.tvCartItemType.setText(book.getType());
         holder.tvCartItemPrice.setText("$" + book.getPrice());
+        holder.tvCartItemQty.setText(book.getQty() + " pcs");
     }
 
     @Override
@@ -74,6 +75,7 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.ViewHo
         TextView tvCartItemName;
         TextView tvCartItemType;
         TextView tvCartItemPrice;
+        TextView tvCartItemQty;
         Button btnMinus;
         Button btnPlus;
 
@@ -83,6 +85,7 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.ViewHo
             tvCartItemName = itemView.findViewById(R.id.tvCartItemName);
             tvCartItemType = itemView.findViewById(R.id.tvCartItemType);
             tvCartItemPrice = itemView.findViewById(R.id.tvCartItemPrice);
+            tvCartItemQty = itemView.findViewById(R.id.tvCartItemQty);
 
             if(itemView.findViewById(R.id.btnMinus) != null){
                 btnMinus = itemView.findViewById(R.id.btnMinus);
