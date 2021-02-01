@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -37,6 +39,8 @@ public class CartActivity extends AppCompatActivity implements CartItemAdapter.A
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
+
+        getSupportActionBar().setTitle(getString(R.string.app_name) + " : Cart");
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -128,6 +132,13 @@ public class CartActivity extends AppCompatActivity implements CartItemAdapter.A
         tvTotal.setText("$"+this.total.toString());
         tvTaxes.setText("$"+this.taxes.toString());
         tvShipping.setText("$"+this.shipping.toString());
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.toolbar, menu);
+        return true;
     }
 
 }
