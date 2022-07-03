@@ -1,13 +1,8 @@
 # EzyCommerce
 
-A simple food e-commerce Android application written in Java made for MOBI6059 - Mobile Programming midterm exam.
-
-## Application Flow
-
-![flow](doc-images/flow.png?raw=true "flow")
+A simple book e-commerce Android application written in Java made for MOBI6059 - Mobile Programming final exam.
 
 ## Screenshots
 
-![main](doc-images/main.png?raw=true "main")
-![catalog](doc-images/catalog.png?raw=true "catalog")
-![order](doc-images/order.png?raw=true "order")
+![catalog](.docs/screenshots/catalog.png?raw=true "catalog")
+![cart](.docs/screenshots/cart.png?raw=true "cart")
